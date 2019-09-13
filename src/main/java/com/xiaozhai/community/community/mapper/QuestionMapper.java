@@ -1,5 +1,6 @@
 package com.xiaozhai.community.community.mapper;
 
+import com.xiaozhai.community.community.dto.QuestionDTO;
 import com.xiaozhai.community.community.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -28,4 +29,7 @@ public interface QuestionMapper {
 
     @Select("select count(id)  from question where creator = #{id}")
     Integer countQuestionById(Integer id);
+
+    @Select("select * from question where id = #{id}")
+    QuestionDTO questionById(Integer id);
 }

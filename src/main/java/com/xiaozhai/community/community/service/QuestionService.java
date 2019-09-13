@@ -49,4 +49,14 @@ public class QuestionService {
         }
         return questionDTOList;
     }
+
+
+    public QuestionDTO selectById(Integer id) {
+        QuestionDTO questionDTO = new QuestionDTO();
+        questionDTO=questionMapper.questionById(id);
+        Integer creator = questionDTO.getCreator();
+        User user = userMapper.finById(creator);
+        questionDTO.setUser(user);
+        return questionDTO;
+    }
 }

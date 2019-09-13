@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class QuestionDTO {
+    private Integer id;
     private String title;
     private String description;
     private Long gmtCreate;
