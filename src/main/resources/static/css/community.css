@@ -1,0 +1,18 @@
+body {
+    background-color: #efefef;
+}
+.main {
+    background-color: white;
+    margin: 30px;
+}
+.content-left {
+    margin-top: 50px;
+}
+.btn-publish {
+    float: right;
+    margin-bottom: 15px
+}
+.question-img {
+    width: 40px;
+    height: 40px;
+}

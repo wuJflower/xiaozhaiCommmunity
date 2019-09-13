@@ -3,7 +3,7 @@ package com.xiaozhai.community.community.provider;
 
 import com.alibaba.fastjson.JSON;
 import com.xiaozhai.community.community.dto.GitUserDTO;
-import com.xiaozhai.community.community.dto.TakenacessDTO;
+import com.xiaozhai.community.community.dto.TokenacessDTO;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
@@ -11,12 +11,12 @@ import java.io.IOException;
 
 @Component
 public class GithubProvider {
-    public String getAccesstoken(TakenacessDTO takenacessDTO){
+    public String getAccesstoken(TokenacessDTO tokenacessDTO){
          MediaType mediaType= MediaType.get("application/json; charset=utf-8");
         //创建okhttp客户端
         OkHttpClient client = new OkHttpClient();
         //创建POST请求头,
-        RequestBody body = RequestBody.create(mediaType,JSON.toJSONString(takenacessDTO));
+        RequestBody body = RequestBody.create(mediaType,JSON.toJSONString(tokenacessDTO));
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
                 .post(body)

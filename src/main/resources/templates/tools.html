@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>小宅社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/community.css">
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="js/qrcode.min.js"></script>
+    <script type="text/javascript" src="js/jquery.base64.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-md-8 col-lg-8">
+            <h3>base64编码/解码</h3>
+            <div class="col-md-12 col-lg-12">
+                <div class="input-group">
+                    <button class="btn btn-default" type="button" id="encode">编码</button>
+                    <button class="btn btn-default" type="button" id="decode">解码</button>
+                </div>
+            </div>
+            <!--原文框-->
+            <span class="col-md-6 col-lg-6 " style="height: 100px ">
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="originalText" placeholder="Type original text"
+                             aria-describedby="basic-addon1">
+                     </div>
+                </span>
+            <!--结果框-->
+            <span class="col-md-6 col-lg-6 " style="height: 100px">
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="resultText" aria-describedby="basic-addon1">
+                     </div>
+                </span>
+            <h3>QRCode生成</h3>
+            <div class="col-md-12 col-lg-12">
+                <!--原文框-->
+                <div class="input-group">
+                    <input type="text" class="form-control" id="textQRCode" placeholder="Type text"
+                           aria-describedby="basic-addon1">
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" id="drawQRCode">生成</button>
+                    </span>
+                </div>
+            </div>
+            <div id="canvasQRCode" style="text-align: center;margin: 30px;margin-top: 20px">
+                <canvas style="height: 128px;width: 128px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-3 content-left">本页包含工具有：base64编码/解码，二维码生成/解析</div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="js/codemirror.min.js"></script>
+<script>
+    function utf16to8(str) {
+        var out, i, len, c;
+        out = "";
+        len = str.length;
+        for (i = 0; i < len; i++) {
+            c = str.charCodeAt(i);
+            if ((c >= 0x0001) && (c <= 0x007F)) {
+                out += str.charAt(i);
+            } else if (c > 0x07FF) {
+                out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+                out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+                out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+            } else {
+                out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+                out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+            }
+        }
+        return out;
+    };
+
+    var encodeResult = null
+    var decodeResult = null
+    $('#encode').click(function () {
+        // var editor=CodeMirror.fromTextArea(document.getElementById("originalText"),{
+        //     lineNumber:true,
+        //     matchBrackets:true,
+        //     indentUnit:4,
+        //     indenntWithTabs:true
+        // })
+        //var origin = editor.getValue()
+        var origin=$('#originalText').val()
+        encodeResult = $.base64.encode( origin)
+        $('#resultText').val(encodeResult)
+        console.log(encodeResult)
+    })
+    $('#decode').click(function () {
+        var origin = $('#originalText').val()
+        decodeResult = $.base64.decode(origin)
+        $('#resultText').val(decodeResult)
+        console.log(decodeResult)
+    })
+    $('#drawQRCode').click(function () {
+        $('#canvasQRCode').empty()
+        $('#canvasQRCode').qrcode(utf16to8( $('#textQRCode').val() ))
+    })
+</script>
+</html>

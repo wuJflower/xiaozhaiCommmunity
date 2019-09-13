@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>个人中心</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-md-8 col-lg-8">
+            <h3><span th:text="${sectionName}"></span></h3>
+            <hr>
+            <div class="media" th:each="question: ${pagenation.getQuestionDTOS()}">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="question-img img-rounded " th:src="${question.user.avatarUrl}" >
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <span th:text="${question.commentCount}"></span>个评论 •
+                    <span th:text="${question.commentCount}"></span>次浏览 •
+                    <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>发布
+                </div>
+            </div>
+            <!--页标-->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li>
+                        <a th:if="${pagenation.getPage()}-2>0"
+                           th:href="'/?page='+(${pagenation.getPage()}-2)+'&&size=3'"
+                           aria-label="Previous">
+                            https://www.w3school.com.cn/i/movie.ogg <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a th:if="${pagenation.getPage()}-1>0" th:href="'/profile/questions/?page='+(${pagenation.getPage()}-1)+'&&size=3'" th:text="${pagenation.getPage()}-1"></a></li>
+                    <li class="active"><a th:href="'/profile/questions/?page='+${pagenation.getPage()}+'&&size=3'" th:text="${pagenation.getPage()}"></a></li>
+                    <li><a th:if="${pagenation.getPage()}!=${pagenation.getTotalPage()}" th:href="'/profile/questions/?page='+(${pagenation.getPage()}+1)+'&&size=3'" th:text="${pagenation.getPage()}+1"></a></li>
+                    <li>
+                        <a  th:if="${pagenation.getPage()}+2<${pagenation.getTotalPage()}"
+                            th:href="'/?page='+(${pagenation.getPage()}+2)+'&&size=3'"
+                            aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-md-3 content-left">
+            <div class="list-group">
+                <a href="/profile/questions"  th:class="${section}== 'questions'? 'list-group-item active' :'list-group-item'">我的问题</a>
+                <a href="/profile/replies"  th:class="${section}== 'replies'? 'list-group-item active' :'list-group-item'">我的回复</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
