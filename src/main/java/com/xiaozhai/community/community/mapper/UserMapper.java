@@ -4,6 +4,7 @@ import com.xiaozhai.community.community.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,4 +18,10 @@ public interface UserMapper {
 
     @Select("select * from user where id =  #{id}")
     User finById(Integer id);
+
+    @Select("select * from user where accountid =  #{accountid}")
+    User finByAccountId(Integer accountid);
+
+    @Update("update user set gmtModified=#{gmtModified} ,avatarUrl=#{avatarUrl},name=#{name},token=#{token} where id=#{id}")
+    void updateUser(Integer id, Long gmtModified, String avatarUrl, String name, String token);
 }

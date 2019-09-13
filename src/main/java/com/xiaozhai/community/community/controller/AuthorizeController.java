@@ -5,6 +5,7 @@ import com.xiaozhai.community.community.dto.TokenacessDTO;
 import com.xiaozhai.community.community.mapper.UserMapper;
 import com.xiaozhai.community.community.model.User;
 import com.xiaozhai.community.community.provider.GithubProvider;
+import com.xiaozhai.community.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,9 @@ public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
+
+
 
 
     //注入application.properties 里的值
@@ -56,7 +59,7 @@ public class AuthorizeController {
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(gitUserDTO.getAvatar_url());
-            userMapper.insertUser(user);
+            userService.insertOrUpdate(user);
             response.addCookie(new Cookie("token",token));
             //获取session写入user键值对
             request.getSession().setAttribute("user",user);
