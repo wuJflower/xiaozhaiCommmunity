@@ -45,9 +45,9 @@ public class IndexController {
         } else {
             totalPage = totalCount / size + 1;
         }
-        if(page > totalPage){
-            throw new CustomizedException("您查询的页面不存在");
-        }
+//        if(page > totalPage){
+//            throw new CustomizedException("您查询的页面不存在");
+//        }
         fillPagenation(page, model, questionDTOS, totalPage);
         return "index";
     }
