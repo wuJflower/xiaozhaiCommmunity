@@ -54,12 +54,12 @@ public class AuthorizeController {
             User user = new User();
             String token =UUID.randomUUID().toString();
             user.setToken(token);
-            user.setAccountID(String.valueOf(gitUserDTO.getId()));
+            user.setAccountId(String.valueOf(gitUserDTO.getId()));
             user.setName(gitUserDTO.getLogin());
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(gitUserDTO.getAvatar_url());
-            User user1 = userService.insertOrUpdate(user);
+            userService.insertOrUpdate(user);
             response.addCookie(new Cookie("token",token));
             //获取session写入user键值对
             //重定向到主页

@@ -4,6 +4,7 @@ import com.xiaozhai.community.community.dto.PagenationDTO;
 import com.xiaozhai.community.community.dto.QuestionDTO;
 import com.xiaozhai.community.community.mapper.QuestionMapper;
 import com.xiaozhai.community.community.mapper.UserMapper;
+import com.xiaozhai.community.community.model.QuestionExample;
 import com.xiaozhai.community.community.model.User;
 import com.xiaozhai.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,17 +51,17 @@ public class ProfileController {
         }
         List<QuestionDTO> questionDTOS = questionService.questionListById(user.getId(),page, size);
         Integer totalPage = 0;
-        Integer totalCount = questionMapper.countQuestionById(user.getId());
+
+        QuestionExample example = new QuestionExample();
+        example.createCriteria()
+                .andCreatorEqualTo(user.getId());
+        Integer totalCount = (int)questionMapper.countByExample(example);
         if (totalCount % size == 0) { 
             totalPage = totalCount / size;
         } else {
             totalPage = totalCount / size + 1;
         }
-        PagenationDTO pagenationDTO =new PagenationDTO();
-        pagenationDTO.setQuestionDTOS(questionDTOS);
-        pagenationDTO.setPage(page);
-        pagenationDTO.setTotalPage(totalPage);
-        model.addAttribute("pagenation",pagenationDTO);
+        IndexController.fillPagenation(page, model, questionDTOS, totalPage);
         return "profile";
     }
 }

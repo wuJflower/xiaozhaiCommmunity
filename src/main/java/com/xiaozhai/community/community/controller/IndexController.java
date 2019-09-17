@@ -5,6 +5,7 @@ import com.xiaozhai.community.community.dto.QuestionDTO;
 import com.xiaozhai.community.community.exception.CustomizedException;
 import com.xiaozhai.community.community.mapper.QuestionMapper;
 import com.xiaozhai.community.community.mapper.UserMapper;
+import com.xiaozhai.community.community.model.QuestionExample;
 import com.xiaozhai.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,7 +39,7 @@ public class IndexController {
 
         List<QuestionDTO> questionDTOS = questionService.questionList(page, size);
         Integer totalPage = 0;
-        Integer totalCount = questionMapper.countQuestion();
+        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
@@ -47,11 +48,15 @@ public class IndexController {
         if(page > totalPage){
             throw new CustomizedException("您查询的页面不存在");
         }
+        fillPagenation(page, model, questionDTOS, totalPage);
+        return "index";
+    }
+
+    static void fillPagenation(@RequestParam(name = "page", required = false, defaultValue = "1") int page, Model model, List<QuestionDTO> questionDTOS, Integer totalPage) {
         PagenationDTO pagenationDTO =new PagenationDTO();
         pagenationDTO.setQuestionDTOS(questionDTOS);
         pagenationDTO.setPage(page);
         pagenationDTO.setTotalPage(totalPage);
         model.addAttribute("pagenation",pagenationDTO);
-        return "index";
     }
 }
