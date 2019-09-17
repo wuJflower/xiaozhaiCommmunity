@@ -64,16 +64,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.xiaozhai.community</groupId>
-            <artifactId>community</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.xiaozhai.community</groupId>
-            <artifactId>community</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
@@ -97,6 +87,18 @@
                     <user>sa</user>
                     <password>123</password>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.4.195</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.7</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.h2database</groupId>

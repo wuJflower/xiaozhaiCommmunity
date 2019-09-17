@@ -5,9 +5,11 @@
 [bootstrp](https://v3.bootcss.com/components/)
 
 [oauth app  ](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
+[mybatis_generator ](http://mybatis.org/generator/running/runningWithMaven.html)
 ##工具
 git
 ##脚本
+```bash
 mvn flyway:migrate
 mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
-
+```

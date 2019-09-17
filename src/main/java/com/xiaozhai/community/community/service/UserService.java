@@ -11,7 +11,7 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    public void insertOrUpdate(User user) {
+    public User insertOrUpdate(User user) {
         User dbuser = userMapper.finByAccountId(Integer.valueOf(user.getAccountID()));
         if (dbuser == null) {
             userMapper.insertUser(user);
@@ -19,5 +19,6 @@ public class UserService {
         else {
             userMapper.updateUser(user.getId(),user.getGmtModified(),user.getAvatarUrl(),user.getName(),user.getToken());
         }
+        return dbuser;
     }
 }

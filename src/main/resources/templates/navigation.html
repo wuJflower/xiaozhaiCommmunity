@@ -32,7 +32,7 @@
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li th:if="${session.user == null}">
-                            <a href="https://github.com/login/oauth/authorize?client_id=6be0f5dc9a0166477384&redirect_uri=http://localhost:8888/callback&scope=user&state=1">登录</a>
+                            <a href="https://github.com/login/oauth/authorize?client_id=6be0f5dc9a0166477384&redirect_uri=http://localhost:8888/callback&scope='user'&state=1">登录</a>
                         </li>
                         <li th:if="${session.user!=null}">
                             <a href="/publish">提问</a>

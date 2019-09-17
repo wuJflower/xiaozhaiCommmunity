@@ -59,10 +59,9 @@ public class AuthorizeController {
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(gitUserDTO.getAvatar_url());
-            userService.insertOrUpdate(user);
+            User user1 = userService.insertOrUpdate(user);
             response.addCookie(new Cookie("token",token));
             //获取session写入user键值对
-            request.getSession().setAttribute("user",user);
             //重定向到主页
             return "redirect:/";
         }else{
