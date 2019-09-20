@@ -1,6 +1,7 @@
 package com.xiaozhai.community.community.service;
 
 import com.xiaozhai.community.community.dto.QuestionDTO;
+import com.xiaozhai.community.community.mapper.QuestionEtxMapper;
 import com.xiaozhai.community.community.mapper.QuestionMapper;
 import com.xiaozhai.community.community.mapper.UserMapper;
 import com.xiaozhai.community.community.model.Question;
@@ -19,6 +20,8 @@ public class QuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private QuestionEtxMapper questionEtxMapper;
 
     public  List<QuestionDTO> questionList(int page, int size) {
         Integer offset = size * (page -1);
@@ -60,5 +63,14 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;
+    }
+
+    public void incView(Integer id) {
+
+        //防止同时请求时,viewcount不累加所以采用view_count=view_count+1
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionEtxMapper.incView(question);
     }
 }

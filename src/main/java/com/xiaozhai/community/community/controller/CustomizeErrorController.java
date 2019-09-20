@@ -1,5 +1,6 @@
 package com.xiaozhai.community.community.controller;
 
+import com.xiaozhai.community.community.exception.CustomizeErrorCode;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ public class CustomizeErrorController implements ErrorController {
         model.addAttribute("message","请求的页面不存在哦亲，要不换一个试试！！");
         }
         if (status.is5xxServerError()){
-            model.addAttribute("message","服务器冒烟了，要不一会儿来试试！！");
+            model.addAttribute("message", CustomizeErrorCode.SYS_ERROR.getMessage());
         }
         return new ModelAndView("error");
     }
