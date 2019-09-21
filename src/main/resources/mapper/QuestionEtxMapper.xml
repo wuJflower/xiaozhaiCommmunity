@@ -24,4 +24,11 @@
     where ID  = #{id}
 
   </update>
+  <update id="incCommentCount" parameterType="com.xiaozhai.community.community.model.Question">
+    update QUESTION
+    set
+    COMMENT_COUNT =  COMMENT_COUNT+ #{viewCount,jdbcType=INTEGER}
+    where ID  = #{id}
+
+  </update>
 </mapper>
