@@ -12,7 +12,7 @@ public enum CommentType {
     }
 
     public static boolean isExist(Integer type){
-        return type.equals(COMMENT)&&type.equals(QUESTION);
+        return type.equals(1)||type.equals(0);
     }
 
 }

@@ -21,7 +21,7 @@ public class CustomizeExceptionHandler {
                                      Model model) {
 
         String contentType = request.getContentType();
-
+        //响应json请求的异常,并返回json
         if ("application/json".equals(contentType)) {
                  ResultDTO resultDTO = null;
 
@@ -40,7 +40,7 @@ public class CustomizeExceptionHandler {
             }
             return  null;
         }else {
-
+//        返回错误页面
             if (ex instanceof CustomizedException) {
                 model.addAttribute("message", ex.getMessage());
             } else {

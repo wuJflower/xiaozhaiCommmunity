@@ -23,7 +23,7 @@ public class CommentService {
     private QuestionEtxMapper questionEtxMapper;
     public void insert(Comment comment , User user) {
 //      选择的问题或者评论不存在
-        if (comment.getId() == null || comment.getParentId() == null){
+        if (comment.getParentId() == null){
             throw new CustomizedException(CustomizeErrorCode.TARGET_NOT_SELECTED);
         }
 //        评论类型非法

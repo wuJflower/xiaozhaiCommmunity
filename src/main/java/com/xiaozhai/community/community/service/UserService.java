@@ -21,8 +21,6 @@ public class UserService {
                 .andAccountIdEqualTo(user.getAccountId());
         List<User> users = userMapper.selectByExample(userExample);
         if (users.size() == 0) {
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(System.currentTimeMillis());
             userMapper.insert(user);
         }
         else {
@@ -34,8 +32,9 @@ public class UserService {
             updateUser.setGmtModified(System.currentTimeMillis());
             UserExample example = new UserExample();
             example.createCriteria()
-                    .andAccountIdEqualTo(dbUser.getAccountId());
-            userMapper.updateByExample(user,example);
+                    .andIdEqualTo(dbUser.getId());
+            //注意是选择性更新表元素属性，updateByExampleSelective,不是updateByExample
+            userMapper.updateByExampleSelective(updateUser,example);
         }
     }
 }
