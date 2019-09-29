@@ -2,6 +2,7 @@ package com.xiaozhai.community.community.controller;
 
 import com.xiaozhai.community.community.dto.CommentDTO;
 import com.xiaozhai.community.community.dto.ResultDTO;
+import com.xiaozhai.community.community.enums.CommentType;
 import com.xiaozhai.community.community.exception.CustomizeErrorCode;
 import com.xiaozhai.community.community.exception.CustomizedException;
 import com.xiaozhai.community.community.model.Comment;
@@ -9,12 +10,10 @@ import com.xiaozhai.community.community.model.User;
 import com.xiaozhai.community.community.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -29,7 +28,7 @@ public class CommentController {
     public Object post(@RequestBody CommentDTO commentDTO,
                        HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
-        if (null == user){
+        if (null == user) {
             throw new CustomizedException(CustomizeErrorCode.USER_NOT_LOGIN);
         }
 
@@ -44,4 +43,15 @@ public class CommentController {
         //添加评论成功
         return new ResultDTO().okOf();
     }
+
+    /*
+        二级评论接口
+     */
+    @ResponseBody
+    @RequestMapping(name = "/comment/{id}")
+    public ResultDTO<List<CommentDTO>> comments(@PathVariable("id") int id) {
+        List<CommentDTO> commentDTOS = commentService.listById(id ,CommentType.COMMENT);
+        return new ResultDTO().okOf(commentDTOS);
+    }
+
 }

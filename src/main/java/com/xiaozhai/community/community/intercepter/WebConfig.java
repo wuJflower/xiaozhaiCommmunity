@@ -17,11 +17,12 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     SessionInterceptor sessionInterceptor;
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/**")
-//                .addResourceLocations("/js","/css","/fonts");
-//    }
+//    springmvc 静态资源解析
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("/js","/css","/fonts");
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
