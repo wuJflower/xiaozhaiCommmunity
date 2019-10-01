@@ -33,10 +33,6 @@ public class UserService {
             UserExample example = new UserExample();
             example.createCriteria()
                     .andIdEqualTo(dbUser.getId());
-<<<<<<< HEAD
-=======
-            //注意是选择性更新表元素属性，updateByExampleSelective,不是updateByExample
->>>>>>> e77cf45f42657b7f1b98800bd368630c457da6d7
             userMapper.updateByExampleSelective(updateUser,example);
         }
     }

@@ -1,35 +1,25 @@
 package com.xiaozhai.community.community.service;
 
 import com.xiaozhai.community.community.dto.CommentDTO;
-import com.xiaozhai.community.community.dto.ResultDTO;
 import com.xiaozhai.community.community.enums.CommentType;
 import com.xiaozhai.community.community.exception.CustomizeErrorCode;
 import com.xiaozhai.community.community.exception.CustomizedException;
 import com.xiaozhai.community.community.mapper.CommentMapper;
 import com.xiaozhai.community.community.mapper.QuestionEtxMapper;
-<<<<<<< HEAD
 import com.xiaozhai.community.community.mapper.UserMapper;
 import com.xiaozhai.community.community.model.*;
 import org.springframework.beans.BeanUtils;
-=======
-import com.xiaozhai.community.community.model.Comment;
-import com.xiaozhai.community.community.model.Question;
-import com.xiaozhai.community.community.model.User;
->>>>>>> e77cf45f42657b7f1b98800bd368630c457da6d7
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-<<<<<<< HEAD
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-=======
->>>>>>> e77cf45f42657b7f1b98800bd368630c457da6d7
+
 @Transactional //注解实现事务
 @Service
 public class CommentService {
@@ -57,10 +47,16 @@ public class CommentService {
         comment.setCommentator(user.getId());
 //     选择性插入,否则会用null覆盖表中初始的likecount
         commentMapper.insertSelective(comment);
-        //问题评论成功后评论数自加一
-        Question record = new Question();
-        record.setId(comment.getParentId());
-        questionEtxMapper.incCommentCount(record);
+//        问题评论成功后评论数自加一
+        if (comment.getType().equals(CommentType.QUESTION)){
+            Question record = new Question();
+            record.setId(comment.getParentId());
+            questionEtxMapper.incCommentCount(record);
+        }else{
+//            评论回复数增加
+
+
+        }
     }
 
     public List<CommentDTO> listById(int id, CommentType type) {

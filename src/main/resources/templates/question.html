@@ -3,32 +3,8 @@
 <head>
     <title>小宅社区</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<<<<<<< HEAD
     <div th:insert="~{import :: head}"></div>
-=======
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/css/community.css">
-    <style type="text/css">
-        .commentator{
-            margin-top: 10px;
-        }
-
-        #comment-content{
-            margin: 10px 0;
-            height: 80px;
-        }
-        .comment-btn{
-            float: right;
-            margin: 10px 0;
-        }
-
-
-    </style>
-    <!--<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>-->
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
->>>>>>> e77cf45f42657b7f1b98800bd368630c457da6d7
+    <script src="http://momentjs.cn/downloads/moment.min.js"></script>
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
@@ -51,7 +27,6 @@
                 <!--编辑-->
                 <hr class="col-md-12 col-lg-12 col-sm-12">
                 <div class="col-sm-12 col-md-12 col-lg-12">
-<<<<<<< HEAD
                     <a th:href="'/publish/'+${question.id}"
                        th:if="${session.user!=null && session.user.id == question.creator}">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span>编辑</span>
@@ -74,24 +49,20 @@
                             <span th:text="${comment.getViewCount()}"></span>
                         </span>
                         <span class="pull-right"
-                              th:text="${#dates.format(comment.getGmtCreate(),'yyyy-MM-dd HH:mm')}"></span>
+                              th:text="${#dates.format(comment.getGmtCreate(),'yyyy-MM-dd')}"></span>
                     </div>
                     <!--二级评论-->
-                    <div class="collapse" th:id="'comments-'+${comment.id}">
-                        <input type="text" th:id="'input-'+${comment.id}" placeholder="评论一下">
-                        <button type="button" class="btn btn-success comment-btn" onclick="comment(this)"
-                                th:data-id="${comment.id}">评论
-                        </button>
+                    <div class="collapse comments" th:id="'comments-'+${comment.id}">
+                        <div>
+                            <input class="form-control" type="text" th:id="'input-'+${comment.id}"  placeholder="评论一下">
+                            <button type="button" class="btn btn-success comment-btn" onclick="comment(this)"
+                                    th:data-id="${comment.id}">评论
+                            </button>
+                        </div>
                     </div>
 
                 </div>
                 <hr class="col-md-12 col-lg-12 col-sm-12">
-=======
-                    <a th:href="'/publish/'+${question.id}" th:if="${session.user!=null && session.user.id == question.creator}">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span>编辑</span>
-                    </a>
-                </div>
->>>>>>> e77cf45f42657b7f1b98800bd368630c457da6d7
                 <div class="row col-lg-12 col-md-12 col-sm-12">
                     <div class="media-left">
                         <a href="#">
@@ -105,11 +76,7 @@
                     <!--隐藏问题id供js取值-->
                     <input type="hidden" th:value="${question.id}" id="parentId">
                     <textarea class="col-lg-12 col-md-12 col-sm-12" id="comment-content"></textarea>
-<<<<<<< HEAD
                     <button type="button" class="btn btn-success comment-btn" onclick="post()">回复</button>
-=======
-                    <button type="button" class="btn btn-success comment-btn"  onclick="sendComment()">回复</button>
->>>>>>> e77cf45f42657b7f1b98800bd368630c457da6d7
                 </div>
             </div>
 
@@ -121,11 +88,7 @@
                 </a>
             </div>
             <div class="media-body">
-<<<<<<< HEAD
                 <div th:text="${question.user.name}" class="commentator"></div>
-=======
-                <div th:text="${question.user.name}"class="commentator" ></div>
->>>>>>> e77cf45f42657b7f1b98800bd368630c457da6d7
             </div>
         </div>
     </div>
@@ -136,18 +99,19 @@
         //取问题id和评论内容
         var parentId = $("#parentId").val();
         var content = $("#comment-content").val();
-        sendComment(parentId, content, 0);
+        sendComment("/comment",parentId, content, 0);
     }
 
     // 发送二级评论
     function comment(e) {
         var id = e.getAttribute("data-id");
-        var content = $("#input-" + id);
+        var contentElement = $("#input-" + id);
+        var content = contentElement.val();
         sendComment(id, content, 1);
     }
 
     //异步发送请求
-    function sendComment(parentId, content, commentType) {
+    function sendComment( parentId, content, commentType) {
         //ajax异步发送请求
         $.ajax({
             type: "POST",
@@ -165,38 +129,61 @@
             dataType: "json"//上传的数据格式
         });
     }
+
     //折叠二级评论
     function collapseComment(e) {
-        var id = e.getAttribute("data-id");
+        var id = e.getAttribute("id");
         var comments = $("#comments-" + id);
 
         var collapse = e.getAttribute("data-collapse");
-
         if (collapse) {
-            e.removeClass("active")
+          e.removeAttribute("data-collapse");
+            e.classList.remove("active");
             comments.removeClass("in")
         } else {
             var subComments = $("#comments-" + id);
-            subComments.addClass("in")
-            e.setAttribute("data-collapse", "in");
+            e.classList.add("active");
             //已经加载子评论
-            if (subComments.children.length != 1) {
+            if (subComments.children().length != 1) {
+                e.setAttribute("data-collapse", "in");
+                subComments.addClass("in");
             } else {
                 //    异步加载子评论
                 $.getJSON("/comment/" + id, function (data) {
+                    //循环遍历获取的数据
                     $.each(data.data.reverse(), function (index, comment) {
                         var medialeft = $("<div/>", {
-                                            "class": "media-left"
-                                        }).append("<img/>", {
-                                            "class": "question-img img-rounded",
-                                            "src":comment.user.avatarUrl
-                                        })
-                        $("<div/>",{
-                            "class":"question-img img-rounded "
-                        }).append("<div/>",{
-                            text:comment.user.name
-                        })
+                            "class": "media-left"
+                        }).append($("<img/>", {
+                            "class": "question-img img-rounded",
+                            "src": comment.user.avatarUrl
+                        }));
+                        var mediaBody = $("<div/>", {
+                            "class": "media-body"
+                        }).append($("<div/>", {
+                            "text": comment.user.name
+                        })).append($("<div/>", {
+                            "text": comment.content
+                        })).append($("<span/>", {
+                            "class": "pull-right",
+                            "html": moment(comment.gmtCreate).format("YYYY-MM-DD")
+                        }))
+                        var media = $("<div/>",{
+                            "class":"media"
+                        }).append(medialeft).append(mediaBody);
+                        var commentElement = $("<div/>",{
+                            "class":"col-md-12 col-lg-12 col-sm-12"
+                        }).append(media);
+                        //往评论列表添加评论元素
+                        subComments.prepend(commentElement)
                     })
+
+                    //点亮评论元素
+                    e.classList.add("active")
+                    //标记评论展开状态
+                    e.setAttribute("data-collapse","in")
+                    //展开评论
+                    comments.addClass("in")
                 })
             }
         }

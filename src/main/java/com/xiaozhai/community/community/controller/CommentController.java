@@ -48,9 +48,9 @@ public class CommentController {
         二级评论接口
      */
     @ResponseBody
-    @RequestMapping(name = "/comment/{id}")
-    public ResultDTO<List<CommentDTO>> comments(@PathVariable("id") int id) {
-        List<CommentDTO> commentDTOS = commentService.listById(id ,CommentType.COMMENT);
+    @GetMapping("/comment/{id}")
+    public ResultDTO<List<CommentDTO>> comments(@PathVariable Integer id) {
+        List<CommentDTO> commentDTOS = commentService.listById(id, CommentType.COMMENT);
         return new ResultDTO().okOf(commentDTOS);
     }
 
