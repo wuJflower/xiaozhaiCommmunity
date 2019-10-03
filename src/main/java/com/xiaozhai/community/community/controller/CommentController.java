@@ -8,6 +8,7 @@ import com.xiaozhai.community.community.exception.CustomizedException;
 import com.xiaozhai.community.community.model.Comment;
 import com.xiaozhai.community.community.model.User;
 import com.xiaozhai.community.community.service.CommentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class CommentController {
 
@@ -29,6 +31,7 @@ public class CommentController {
                        HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         if (null == user) {
+            log.info("用户未登录");
             throw new CustomizedException(CustomizeErrorCode.USER_NOT_LOGIN);
         }
 

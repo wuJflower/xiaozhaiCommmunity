@@ -23,6 +23,7 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies = request.getCookies();
+//        检验Cookie，验证请求用户是否登录过本站
         if (cookies != null && cookies.length != 0) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
@@ -30,10 +31,8 @@ public class SessionInterceptor implements HandlerInterceptor {
                     UserExample example = new UserExample();
                     example.createCriteria().andTokenEqualTo(token);
                     List<User> users = userMapper.selectByExample(example);
-                    if (users.size()==0){
-                        break;
-                    }else
-                    {
+                    if (users.size()!=0){
+//                        为用户写入登录态
                         request.getSession().setAttribute("user", users.get(0));
                     }
                     break;

@@ -4,11 +4,13 @@ package com.xiaozhai.community.community.provider;
 import com.alibaba.fastjson.JSON;
 import com.xiaozhai.community.community.dto.GitUserDTO;
 import com.xiaozhai.community.community.dto.TokenacessDTO;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class GithubProvider {
     public String getAccesstoken(TokenacessDTO tokenacessDTO){
@@ -28,6 +30,7 @@ public class GithubProvider {
             //返回token
             return token;
         } catch (IOException e) {
+            log.error("get token error");
             e.printStackTrace();
         }
         return null;
@@ -47,6 +50,7 @@ public class GithubProvider {
                 GitUserDTO gitUserDTO = JSON.parseObject(string, GitUserDTO.class);
                 return gitUserDTO;
             } catch (Exception e) {
+                log.error("Failed to transform to JSON");
             }
         } catch (Exception e) {
         }

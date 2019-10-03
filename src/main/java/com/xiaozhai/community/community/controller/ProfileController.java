@@ -1,12 +1,12 @@
 package com.xiaozhai.community.community.controller;
 
-import com.xiaozhai.community.community.dto.PagenationDTO;
 import com.xiaozhai.community.community.dto.QuestionDTO;
 import com.xiaozhai.community.community.mapper.QuestionMapper;
 import com.xiaozhai.community.community.mapper.UserMapper;
 import com.xiaozhai.community.community.model.QuestionExample;
 import com.xiaozhai.community.community.model.User;
 import com.xiaozhai.community.community.service.QuestionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class ProfileController {
     @Autowired
@@ -40,6 +40,7 @@ public class ProfileController {
 
         User user = (User) request.getSession().getAttribute("user");
         if (null == user){
+            log.info("用户未登录");
             return "redirect:/";
         }
         if ("questions".equals(action)){

@@ -2,6 +2,7 @@ package com.xiaozhai.community.community.exception;
 
 import com.alibaba.fastjson.JSON;
 import com.xiaozhai.community.community.dto.ResultDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+//
+@Slf4j
 @ControllerAdvice
 public class CustomizeExceptionHandler {
 

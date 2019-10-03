@@ -26,9 +26,10 @@ public class UserService {
         else {
             User dbUser = users.get(0);
             User updateUser = new User();
-            updateUser.setAvatarUrl(dbUser.getAvatarUrl());
-            updateUser.setName(dbUser.getName());
-            updateUser.setToken(dbUser.getToken());
+            updateUser.setAvatarUrl(user.getAvatarUrl());
+            updateUser.setName(user.getName());
+//            更新已存在用户的token
+            updateUser.setToken(user.getToken());
             updateUser.setGmtModified(System.currentTimeMillis());
             UserExample example = new UserExample();
             example.createCriteria()
